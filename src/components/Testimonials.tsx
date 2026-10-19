@@ -1,0 +1,9 @@
+import { Quote, Star } from 'lucide-react'
+import type { TestimonialItem } from '../types'
+
+export default function Testimonials({ testimonials = [] }: { testimonials?: TestimonialItem[] }) {
+  const visible = testimonials.filter((item) => item.active !== false && item.review?.trim())
+  return <section id="testimonials" className="testimonials-section section-pad"><div className="page-container"><div className="section-heading centered-heading"><p className="eyebrow">KIND WORDS <span className="eyebrow-line" /></p><h2>Made Special, Together</h2><p>Every celebration is personal. When customers share their experience, their words belong here.</p></div>
+    {visible.length ? <div className="testimonials-grid">{visible.map((item) => <article className="testimonial-card" key={item.id || item.customer_name}><Quote className="quote-mark" size={27} strokeWidth={1.2} /><div className="rating-stars" aria-label={`${item.rating} out of 5 stars`}>{Array.from({ length: 5 }, (_, i) => <Star size={15} key={i} fill={i < item.rating ? 'currentColor' : 'none'} />)}</div><p className="testimonial-review">“{item.review}”</p><div className="testimonial-person">{item.photo_url ? <img src={item.photo_url} alt="" loading="lazy" /> : <span className="avatar-placeholder">{item.customer_name?.trim()?.charAt(0) || 'V'}</span>}<div><strong>{item.customer_name || 'Vibe Decor customer'}</strong><small>{item.event_type || 'Celebration'}</small></div></div></article>)}</div> : <div className="testimonial-empty"><div className="testimonial-empty-stars"><Star /><Star /><Star /><Star /><Star /></div><h3>Your experience matters to us.</h3><p>Customer reviews will be added here with permission. We don’t publish made-up reviews or customer names.</p><a href="#contact" className="text-link">Share your event plans <span>→</span></a></div>}
+  </div></section>
+}

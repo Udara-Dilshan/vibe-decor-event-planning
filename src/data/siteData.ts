@@ -1,0 +1,200 @@
+import type { EngagementPackage, ServiceAreaItem, ServiceItem, SiteSettings } from '../types'
+
+export const defaultSettings: SiteSettings = {
+  id: 'main',
+  about_text:
+    'Vibe Decor Event Planning is an event planning and decoration business based in Badulla, Sri Lanka. We help individuals, families, couples, and organizations create meaningful celebrations through thoughtful planning, creative decoration, and reliable event coordination. From intimate gatherings to large occasions, we work to understand your vision and bring it to life with care.',
+  phone: '078 180 0001',
+  whatsapp_number: '94781800001',
+  email: 'mishakaw@gmail.com',
+  address: 'No:06, Badulusirigama, Badulla 90000, Sri Lanka',
+  facebook_url: 'https://www.facebook.com/VibeDecorEventPlanning',
+  instagram_url: '',
+  tagline: 'Every Event Has a Vibe. Make Yours Unforgettable.',
+  secondary_tagline: 'Your Event. Your Vibe. Our Responsibility.',
+}
+
+export const defaultServices: ServiceItem[] = [
+  {
+    id: 'service-weddings',
+    title: 'Weddings',
+    description: 'Thoughtful details and beautiful styling for the beginning of your next chapter.',
+    image: '/service1.webp',
+    icon: 'rings',
+    offerings: [
+      'Wedding planning',
+      'Wedding decorations',
+      'Poruwa arrangements',
+      'Wedding car coordination',
+      'Cake, photography, and videography coordination',
+      'Venue and entertainment coordination',
+    ],
+    sort_order: 1,
+    active: true,
+  },
+  {
+    id: 'service-birthdays',
+    title: 'Birthdays',
+    description: 'Celebrate your favourite people with a setup that feels personal and joyful.',
+    image: '/service2.webp',
+    icon: 'cake',
+    offerings: [
+      'Birthday decorations',
+      'Surprise arrangements',
+      'Theme setup',
+      'Photography and videography coordination',
+      'Entertainment',
+    ],
+    sort_order: 2,
+    active: true,
+  },
+  {
+    id: 'service-parties',
+    title: 'Parties & Celebrations',
+    description: 'Bring friends and family together for special moments worth remembering.',
+    image: '/service3.webp',
+    icon: 'sparkles',
+    offerings: [
+      'Engagements',
+      'Anniversaries',
+      'Homecomings',
+      'Private parties',
+      'Special celebrations',
+    ],
+    sort_order: 3,
+    active: true,
+  },
+  {
+    id: 'service-corporate',
+    title: 'Corporate Events',
+    description: 'Well-organized functions designed around your team, guests, and goals.',
+    image: '/service4.webp',
+    icon: 'briefcase',
+    offerings: [
+      'Corporate functions',
+      'Event coordination',
+      'Venue styling',
+      'Entertainment coordination',
+      'Event setup',
+    ],
+    sort_order: 4,
+    active: true,
+  },
+  {
+    id: 'service-religious',
+    title: 'Religious Events',
+    description: 'Respectful, elegant arrangements for meaningful religious occasions.',
+    image: '/service5.webp',
+    icon: 'flower',
+    offerings: [
+      'Religious functions',
+      'Decorations',
+      'Event coordination',
+      'Guest and venue setup',
+    ],
+    sort_order: 5,
+    active: true,
+  },
+  {
+    id: 'service-planning',
+    title: 'Full Event Planning',
+    description: 'One coordinated team to help bring your event together from the first idea to the final moment.',
+    image: '/service6.webp',
+    icon: 'calendar',
+    offerings: [
+      'Planning and timelines',
+      'Supplier coordination',
+      'Venue arrangements',
+      'Decoration direction',
+      'On-the-day coordination',
+    ],
+    sort_order: 6,
+    active: true,
+  },
+]
+
+export const defaultServiceAreas: ServiceAreaItem[] = [
+  { id: 'area-badulla', name: 'Badulla', description: 'Our home base', sort_order: 1, active: true },
+  { id: 'area-bandarawela', name: 'Bandarawela', description: 'Event planning and decoration', sort_order: 2, active: true },
+  { id: 'area-ella', name: 'Ella', description: 'Intimate celebrations and destination occasions', sort_order: 3, active: true },
+  { id: 'area-mahiyanganaya', name: 'Mahiyanganaya', description: 'Local event coordination', sort_order: 4, active: true },
+  { id: 'area-passara', name: 'Passara', description: 'Event setups and celebrations', sort_order: 5, active: true },
+  { id: 'area-uva', name: 'Across Uva Province', description: 'Ask us about your location', sort_order: 6, active: true },
+]
+
+
+export const defaultPackages: EngagementPackage[] = [
+  {
+    id: 'package-basic', title: 'Basic Package', price: 24500,
+    short_description: 'A graceful engagement setup with a classic backdrop and a beautiful pathway.',
+    image: '/service1.webp',
+    features: [
+      'Basic backdrop (Ring / Hexagon / Rectangular / Arch / Heart / Arrow / Triangular)',
+      'Pathway (6 flower bunches with white boxes or chair decoration with ribbon)',
+      'Petals for pathway',
+      'Basic welcome board',
+    ],
+    add_ons: ['Fresh flowers', 'Tiffany chairs', 'Oil lamp', 'Cake pillar', 'Signing chair decoration'],
+    decor_note: 'Decorations are done with fresh leaves and artificial flowers.',
+    transport_note: 'Transport cost will be added.', sort_order: 1, active: true,
+  },
+  {
+    id: 'package-plus', title: 'Plus Package', price: 46500,
+    short_description: 'A fuller floral setting with an enhanced backdrop and additional finishing details.',
+    image: '/hero-bg2.webp',
+    features: [
+      'Full-filled backdrop (Ring / Hexagon / Rectangular / Arch / Heart / Arrow / Triangular)',
+      'Full-filled pathway',
+      'Petals for pathway',
+      'Welcome board (5 ft panel / mirror / wooden)',
+      'Signing chair decoration for the couple',
+      'Oil lamp',
+      'Cake pillar',
+    ],
+    add_ons: ['Fresh flowers', 'Tiffany chairs', 'White carpet', 'Champagne fountain'],
+    decor_note: 'Decorations are done with fresh leaves and artificial flowers.',
+    transport_note: 'Transport cost will be added.', sort_order: 2, active: true,
+  },
+  {
+    id: 'package-premier', title: 'Premier Package', price: 66500,
+    short_description: 'A statement setup with double backdrops, floral pathway styling, and premium details.',
+    image: '/service6.webp',
+    features: [
+      'Double backdrops or two-panel backdrops (Ring / Rectangular / Arch / Heart / Arrow / Triangular)',
+      'Pathway decoration (full floral decoration with two side pillars and flower bunches)',
+      'White carpet',
+      'Petals for pathway',
+      'Welcome board with side decorations',
+      'Signing chair decoration for the couple',
+      'Oil lamp',
+      'Cake pillar',
+      '17 Tiffany chairs',
+      'Ring box',
+      'Selfie mirror',
+    ],
+    add_ons: ['Fresh flowers', 'Champagne fountain', 'Base platform for backdrop (8 ft × 8 ft)', 'Platform for pathway', 'LOVE structure'],
+    decor_note: 'Decorations are done with fresh leaves and artificial flowers.',
+    transport_note: 'Transport cost will be added.', sort_order: 3, active: true,
+  },
+]
+
+export const inspirationGallery = [
+  { title: 'Wedding styling inspiration', category: 'Wedding', image: 'https://images.unsplash.com/photo-1519225421980-888cb1be41ce?auto=format&fit=crop&w=1200&q=85', alt: 'Elegant wedding reception table styling inspiration' },
+  { title: 'Outdoor ceremony inspiration', category: 'Wedding', image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85', alt: 'Outdoor ceremony setup inspiration' },
+  { title: 'Reception lighting inspiration', category: 'Decoration', image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=85', alt: 'Warm lighting and dining table setup inspiration' },
+  { title: 'Floral stage inspiration', category: 'Decoration', image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=85', alt: 'Floral event stage setup inspiration' },
+  { title: 'Celebration table inspiration', category: 'Party', image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=85', alt: 'Celebration venue arrangement inspiration' },
+  { title: 'Garden event inspiration', category: 'Engagement', image: 'https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=1200&q=85', alt: 'Garden event decoration inspiration' },
+  { title: 'Birthday table inspiration', category: 'Birthday', image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=85', alt: 'Birthday party table and balloon decoration inspiration' },
+  { title: 'Corporate gathering inspiration', category: 'Corporate', image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=85', alt: 'Corporate event venue arrangement inspiration' },
+  { title: 'Religious celebration inspiration', category: 'Religious', image: 'https://images.unsplash.com/photo-1478146896981-b80fe463b330?auto=format&fit=crop&w=1200&q=85', alt: 'Elegant celebration venue inspiration' },
+]
+
+export const siteNav = [
+  { label: 'Home', href: '#home' },
+  { label: 'About', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Packages', href: '#packages' },
+  { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Contact', href: '#contact' },
+]

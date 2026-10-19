@@ -1,0 +1,40 @@
+VIBE DECOR EVENT PLANNING — ස්ථාපන උපදෙස්
+============================================
+
+1. ZIP file එක Extract කර `vibe-decor-complete` project folder එක open කරන්න.
+
+2. Node.js 20 හෝ ඊට වැඩි version එකක් install කර තිබිය යුතුයි. VS Code Terminal එකෙන් පහත commands දෙක run කරන්න:
+
+   npm install
+   npm run dev
+
+3. Website එකේ Admin Portal එක ආරක්ෂිතව භාවිතා කිරීමට Supabase project එකක් අවශ්‍යයි.
+   - Project root එකේ `.env.example` file එක copy කර `.env.local` ලෙස save කරන්න.
+   - Supabase project URL එක `VITE_SUPABASE_URL` වෙත දමන්න.
+   - Supabase public anon/publishable key එක `VITE_SUPABASE_ANON_KEY` වෙත දමන්න.
+   - Service-role key එක browser/frontend code එකට කිසිවිටෙක දාන්න එපා.
+
+4. Supabase Dashboard → SQL Editor එකට ගොස් `supabase/setup.sql` file එකේ SQL run කරන්න. එය website tables, access rules සහ engagement packages තුන සකස් කරයි.
+
+5. Supabase Dashboard → Authentication → Users යටතේ owner user එකක් සාදන්න:
+   Email: sidath@vibedecor.lk
+   Username field: Sidath (website login form එකේ භාවිතා කරන නම)
+   Password: ඔබ නියම කළ ආරක්ෂිත password එක Supabase තුළම set කරන්න.
+
+6. Supabase Authentication තුළ නිර්මාණය කළ user එකේ UUID එක copy කරන්න. ඉන්පසු Supabase SQL Editor එකේ පහත SQL එකේ UUID එක replace කර run කරන්න:
+
+   insert into public.admin_users (user_id) values ('PASTE-AUTH-USER-UUID-HERE');
+
+7. Supabase Auth settings තුළ public sign-ups disable කර තබන්න. RLS policies සක්‍රීයව තබන්න.
+
+8. `.env.local` වෙනස් කළ පසු Vite server එක restart කරන්න.
+
+Admin Portal URL:
+/vibe/deco/log/adminportal/admin
+
+Admin Portal එකේ Events, Services, Packages, Service Areas සහ Contact & Settings කළමනාකරණය කළ හැකියි. Testimonials සහ Videos සඳහා වෙනම admin tabs නැත. Event එකක විස්තර තුළ video URLs තිබිය හැකියි.
+
+වැදගත්:
+- Website source code එකට admin password එක embed කර නැත. එය Supabase Authentication තුළ set කිරීම ආරක්ෂිතයි.
+- Supabase project URL/key සහ owner account allowlist සකස් නොකර secure admin login, cloud uploads හෝ shared content updates ක්‍රියාත්මක වෙන්නේ නැහැ.
+- Production deploy කිරීමට පෙර business phone, WhatsApp, email සහ address නිවැරදිදැයි තහවුරු කරන්න.

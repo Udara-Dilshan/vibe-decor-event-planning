@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 480" fill="none">
+  <defs>
+    <linearGradient id="land" x1="70" y1="42" x2="280" y2="445" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0D38A" stop-opacity=".25"/><stop offset="1" stop-color="#B68A36" stop-opacity=".07"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="50" y1="32" x2="285" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5DFA8"/><stop offset=".55" stop-color="#D5AE58"/><stop offset="1" stop-color="#9A7228"/>
+    </linearGradient>
+  </defs>
+  <path d="M143 14 165 24 184 40 203 64 223 91 240 120 254 150 265 181 269 212 264 244 254 273 241 302 225 331 210 359 194 388 179 416 165 441 154 463 145 474 134 459 124 440 113 419 102 397 91 374 79 350 68 324 58 297 49 269 42 242 37 213 36 186 41 161 50 137 61 113 76 91 92 71 108 54 121 38 132 25Z" fill="url(#land)" stroke="url(#stroke)" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M99 85 131 115 161 145 190 170 221 195M64 152 100 166 134 185 161 211 184 239M48 230 81 237 109 253 133 278 152 307M62 299 94 299 123 314 149 337 171 365M95 370 122 375 145 394 163 421M140 65 155 99 162 131 161 163 169 194 186 221 208 247 227 270M202 101 195 131 197 163 208 192 230 219M232 300 206 306 182 320 165 344" stroke="#D5AE58" stroke-opacity=".32" stroke-width="1.3" stroke-linecap="round"/>
+  <g fill="#F5DFA8" stroke="#090907" stroke-width="4"><circle cx="163" cy="156" r="7"/><circle cx="198" cy="224" r="6"/><circle cx="137" cy="293" r="6"/><circle cx="145" cy="381" r="7"/><circle cx="105" cy="199" r="5"/></g>
+  <g fill="#F5DFA8" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.5"><text x="176" y="152">BADULLA</text><text x="210" y="221">ELLA</text><text x="72" y="289">BANDARAWELA</text><text x="160" y="382">UVA</text></g>
+</svg>
