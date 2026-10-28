@@ -54,8 +54,12 @@ export default function Services({
             const title = containsUnsupportedScript(service.title)
               ? fallbackTitles[service.id] || `Event Service ${index + 1}`
               : service.title
+            // Keep the site's original service photography separate from portfolio/event photos.
+            // Prefer the known service asset for the stable service ID, or its default sort position.
+            const defaultService = defaultServices.find((item) => item.sort_order === service.sort_order)
+            const canonicalImage = serviceImages[service.id] || defaultService?.image || ''
             const customImage = service.image && !service.image.includes('images.unsplash.com') ? service.image : ''
-            const image = customImage || serviceImages[service.id] || `/service${index + 1}.webp`
+            const image = canonicalImage || customImage || `/service${index + 1}.webp`
             return (
               <article className="service-card service-card-minimal" key={service.id || title}>
                 <div className="service-image-wrap">

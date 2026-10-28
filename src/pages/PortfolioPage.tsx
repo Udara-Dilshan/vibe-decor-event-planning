@@ -6,26 +6,23 @@ import FloatingWhatsApp from '../components/FloatingWhatsApp'
 import EventGallery from '../components/EventGallery'
 import { defaultSettings } from '../data/siteData'
 import { listRows } from '../lib/cms'
-import type { CmsRow, EventItem, SiteSettings } from '../types'
+import { hardcodedEvents } from '../data/events'
+import type { CmsRow, SiteSettings } from '../types'
 
 export default function PortfolioPage() {
-  const [events, setEvents] = useState<EventItem[]>([])
+  const events = hardcodedEvents
   const [settings, setSettings] = useState<SiteSettings>(defaultSettings)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let alive = true
     const loadPage = async () => {
-      const [eventResult, settingResult] = await Promise.allSettled([
-        listRows<EventItem & CmsRow>('events', true),
+      const [settingResult] = await Promise.allSettled([
         listRows<SiteSettings & CmsRow>('site_settings', true),
       ])
       if (!alive) return
-      if (eventResult.status === 'fulfilled') setEvents(eventResult.value as EventItem[])
       if (settingResult.status === 'fulfilled' && settingResult.value[0]) {
         setSettings({ ...defaultSettings, ...settingResult.value[0] })
       }
-      setLoading(false)
       document.title = 'Event Portfolio | Vibe Decor Event Planning'
       document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute(
         'content',
@@ -48,11 +45,7 @@ export default function PortfolioPage() {
               <h1>Every Event Has a Vibe.<span>Every Memory Has a Story.</span></h1>
               <p>Explore a collection of event inspiration and celebrations designed with care.</p>
             </div>
-            {loading ? (
-              <div className="event-collection-empty"><span className="portfolio-loading-spinner" /><p>Loading events…</p></div>
-            ) : (
-              <EventGallery events={events} showFilters emptyMessage="There are no published events yet. Add an event through the admin dashboard to start building the gallery." />
-            )}
+            <EventGallery events={events} showFilters emptyMessage="Add your event details in src/data/events.ts to show them in this gallery." />
           </div>
         </section>
       </main>

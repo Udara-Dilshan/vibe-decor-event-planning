@@ -18,6 +18,7 @@ const categories = [
   { value: 'Corporate', label: 'Corporate' },
   { value: 'Religious', label: 'Religious' },
   { value: 'Decoration', label: 'Decoration' },
+  { value: 'Other', label: 'Other' },
 ]
 
 type EventGalleryProps = {
@@ -115,6 +116,8 @@ export default function EventGallery({
   const [category, setCategory] = useState('All events')
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null)
   const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [failedCovers, setFailedCovers] = useState<Record<string, boolean>>({})
+  const [modalImageFailed, setModalImageFailed] = useState(false)
 
   const publishedEvents = useMemo(
     () => newestFirst(events, featuredFirst),
@@ -136,14 +139,17 @@ export default function EventGallery({
   const closeModal = () => {
     setSelectedEvent(null)
     setActiveImageIndex(0)
+    setModalImageFailed(false)
   }
   const showPreviousImage = () => {
     if (images.length < 2) return
     setActiveImageIndex((index) => (index - 1 + images.length) % images.length)
+    setModalImageFailed(false)
   }
   const showNextImage = () => {
     if (images.length < 2) return
     setActiveImageIndex((index) => (index + 1) % images.length)
+    setModalImageFailed(false)
   }
 
   useEffect(() => {
@@ -189,17 +195,25 @@ export default function EventGallery({
             const date = formatEventDate(event.event_date)
             const title = displayText(event.title, 'Featured Event')
             const location = displayText(event.location, '')
+            const eventKey = event.id || event.slug || `${title}-${index}`
+            const coverFailed = Boolean(failedCovers[eventKey])
             return (
               <article className="event-collection-card" key={event.id || event.slug || `${title}-${index}`}>
                 <button
                   className="event-collection-card-button"
                   type="button"
-                  onClick={() => { setSelectedEvent(event); setActiveImageIndex(0) }}
+                  onClick={() => { setSelectedEvent(event); setActiveImageIndex(0); setModalImageFailed(false) }}
                   aria-label={`View details for ${title}`}
                 >
                   <div className="event-collection-card-image">
-                    {cover ? (
-                      <img src={cover} alt={title} loading="lazy" decoding="async" />
+                    {cover && !coverFailed ? (
+                      <img
+                        src={cover}
+                        alt={title}
+                        loading="lazy"
+                        decoding="async"
+                        onError={() => setFailedCovers((current) => ({ ...current, [eventKey]: true }))}
+                      />
                     ) : (
                       <div className="event-card-no-image">
                         <Images size={30} />
@@ -242,7 +256,13 @@ export default function EventGallery({
               <X size={22} />
             </button>
             <div className="event-modal-media">
-              {activeImage ? <img src={activeImage} alt={`${displayText(selectedEvent.title, 'Event')} gallery image ${activeImageIndex + 1}`} /> : (
+              {activeImage && !modalImageFailed ? (
+                <img
+                  src={activeImage}
+                  alt={`${displayText(selectedEvent.title, 'Event')} gallery image ${activeImageIndex + 1}`}
+                  onError={() => setModalImageFailed(true)}
+                />
+              ) : (
                 <div className="event-card-no-image"><Images size={34} /><span>No event image added</span></div>
               )}
               {images.length > 1 && (
@@ -256,7 +276,7 @@ export default function EventGallery({
             {images.length > 1 && (
               <div className="event-modal-thumbnails" aria-label="Event gallery thumbnails">
                 {images.map((image, index) => (
-                  <button key={`${image}-${index}`} type="button" className={index === activeImageIndex ? 'active' : ''} onClick={() => setActiveImageIndex(index)} aria-label={`Show photo ${index + 1}`} aria-pressed={index === activeImageIndex}>
+                  <button key={`${image}-${index}`} type="button" className={index === activeImageIndex ? 'active' : ''} onClick={() => { setActiveImageIndex(index); setModalImageFailed(false) }} aria-label={`Show photo ${index + 1}`} aria-pressed={index === activeImageIndex}>
                     <img src={image} alt="" loading="lazy" />
                   </button>
                 ))}

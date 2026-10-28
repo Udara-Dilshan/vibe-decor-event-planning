@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeft, ArrowUpRight, CalendarDays, MapPin, Share2 } from 'lucide-react'
-import { getPublicEventBySlug, listRows } from '../lib/cms'
+import { ArrowLeft, ArrowUpRight, CalendarDays, Images, MapPin, Share2 } from 'lucide-react'
+import { listRows } from '../lib/cms'
+import { hardcodedEvents } from '../data/events'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import FloatingWhatsApp from '../components/FloatingWhatsApp'
 import { defaultSettings } from '../data/siteData'
 import type { CmsRow, EventItem, SiteSettings } from '../types'
-
-type PublicEvent = EventItem & CmsRow
 
 function hasNonEnglishScript(value: string) {
   return /[\u0D80-\u0DFF]/.test(value)
@@ -37,38 +36,41 @@ function eventDateLabel(value: unknown): string {
 }
 
 export default function EventDetailPage({ slug }: { slug: string }) {
-  const [event, setEvent] = useState<PublicEvent | null>(null)
+  const [event, setEvent] = useState<EventItem | null>(null)
   const [settings, setSettings] = useState<SiteSettings>(defaultSettings)
   const [loading, setLoading] = useState(true)
+  const [failedImages, setFailedImages] = useState<string[]>([])
 
   useEffect(() => {
     let alive = true
-    const loadEvent = async () => {
-      try {
-        const [eventRow, settingRows] = await Promise.all([
-          getPublicEventBySlug(slug),
-          listRows<SiteSettings & CmsRow>('site_settings', true),
-        ])
-        if (!alive) return
-        setEvent(eventRow as PublicEvent | null)
-        if (settingRows[0]) setSettings({ ...defaultSettings, ...settingRows[0] })
+    const eventRow = hardcodedEvents.find(
+      (item) => item.slug === slug && item.status === 'published',
+    ) ?? null
+    setEvent(eventRow)
+    setFailedImages([])
+    setLoading(false)
 
-        const eventTitle = displayText(eventRow?.title, 'Vibe Decor Event')
-        document.title = `${eventTitle} | Vibe Decor Event Planning`
-        document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute(
-          'content',
-          displayText(eventRow?.short_description, 'Vibe Decor Event Planning portfolio — Badulla, Sri Lanka.'),
-        )
-        document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute(
-          'content', `${eventTitle} | Vibe Decor Event Planning`,
-        )
+    const eventTitle = displayText(eventRow?.title, 'Vibe Decor Event')
+    document.title = `${eventTitle} | Vibe Decor Event Planning`
+    document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute(
+      'content',
+      displayText(eventRow?.short_description, 'Vibe Decor Event Planning portfolio — Badulla, Sri Lanka.'),
+    )
+    document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute(
+      'content', `${eventTitle} | Vibe Decor Event Planning`,
+    )
+
+    const loadSettings = async () => {
+      try {
+        const settingRows = await listRows<SiteSettings & CmsRow>('site_settings', true)
+        if (!alive) return
+        if (settingRows[0]) setSettings({ ...defaultSettings, ...settingRows[0] })
       } catch {
-        if (alive) setEvent(null)
-      } finally {
-        if (alive) setLoading(false)
+        // Keep the original site defaults when the CMS is unavailable.
       }
     }
-    void loadEvent()
+    void loadSettings()
+
     return () => { alive = false }
   }, [slug])
 
@@ -76,6 +78,7 @@ export default function EventDetailPage({ slug }: { slug: string }) {
     ? [...new Set([event.cover_image, ...(Array.isArray(event.gallery_images) ? event.gallery_images : [])]
       .filter((item): item is string => typeof item === 'string' && item.trim().length > 0))]
     : []
+  const visibleImages = images.filter((image) => !failedImages.includes(image))
   const videos = event && Array.isArray(event.video_urls)
     ? event.video_urls.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
     : []
@@ -125,11 +128,20 @@ export default function EventDetailPage({ slug }: { slug: string }) {
 
             {images.length > 0 && (
               <div className="event-gallery">
-                {images.map((image, index) => (
+                {visibleImages.map((image, index) => (
                   <a href={image} target="_blank" rel="noreferrer" className={index === 0 ? 'event-gallery-cover' : ''} key={`${image}-${index}`}>
-                    <img src={image} alt={`${title} — photo ${index + 1}`} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
+                    <img
+                      src={image}
+                      alt={`${title} — photo ${index + 1}`}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      onError={() => setFailedImages((current) => current.includes(image) ? current : [...current, image])}
+                    />
                   </a>
                 ))}
+                {visibleImages.length === 0 && (
+                  <div className="event-card-no-image"><Images size={34} /><span>Event photos will appear here</span></div>
+                )}
               </div>
             )}
 
@@ -138,11 +150,11 @@ export default function EventDetailPage({ slug }: { slug: string }) {
                 <p className="eyebrow">THE EVENT STORY<span className="eyebrow-line" aria-hidden="true" /></p>
                 <h2>A Beautiful Memory, Thoughtfully Created.</h2>
                 <p>{displayText(event.full_description || event.short_description)}</p>
-                {Array.isArray(event.services) && event.services.some((item) => !hasNonEnglishScript(String(item))) && (
+                {Array.isArray(event.services) && event.services.some((item) => String(item).trim() && !hasNonEnglishScript(String(item))) && (
                   <>
                     <h3>Services Provided</h3>
                     <div className="event-service-tags">
-                      {event.services.filter((item) => !hasNonEnglishScript(String(item))).map((item) => <span key={String(item)}>{String(item)}</span>)}
+                      {event.services.filter((item) => String(item).trim() && !hasNonEnglishScript(String(item))).map((item) => <span key={String(item)}>{String(item)}</span>)}
                     </div>
                   </>
                 )}

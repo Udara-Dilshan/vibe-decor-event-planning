@@ -25,11 +25,11 @@ import {
 } from './data/siteData'
 
 import { listRows } from './lib/cms'
+import { hardcodedEvents } from './data/events'
 
 import type {
   CmsRow,
   EngagementPackage,
-  EventItem,
   ServiceAreaItem,
   ServiceItem,
   SiteSettings,
@@ -63,7 +63,7 @@ export default function App() {
 }
 
 function HomePage() {
-  const [events, setEvents] = useState<EventItem[]>([])
+  const events = hardcodedEvents
   const [packages, setPackages] = useState<EngagementPackage[]>(defaultPackages)
   const [services, setServices] =
     useState<ServiceItem[]>(defaultServices)
@@ -77,13 +77,11 @@ function HomePage() {
 
     const loadContent = async () => {
       const [
-        eventRows,
         packageRows,
         serviceRows,
         areaRows,
         settingRows,
       ] = await Promise.allSettled([
-        listRows<EventItem & CmsRow>('events', true),
         listRows<EngagementPackage & CmsRow>('packages', true),
         listRows<ServiceItem & CmsRow>('services', true),
         listRows<ServiceAreaItem & CmsRow>(
@@ -98,19 +96,15 @@ function HomePage() {
 
       if (!alive) return
 
-      if (eventRows.status === 'fulfilled') {
-        setEvents(eventRows.value as EventItem[])
-      }
-
       if (packageRows.status === 'fulfilled' && packageRows.value.length) {
         setPackages(packageRows.value as EngagementPackage[])
       }
 
-      if (serviceRows.status === 'fulfilled') {
+      if (serviceRows.status === 'fulfilled' && serviceRows.value.length) {
         setServices(serviceRows.value as ServiceItem[])
       }
 
-      if (areaRows.status === 'fulfilled') {
+      if (areaRows.status === 'fulfilled' && areaRows.value.length) {
         setAreas(areaRows.value as ServiceAreaItem[])
       }
 
